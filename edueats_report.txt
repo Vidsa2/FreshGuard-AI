@@ -1,0 +1,459 @@
+
+--- PAGE 1 ---
+ 
+ 
+ 
+ 
+ 
+ 
+EduEats 
+Mid-Progress Report 
+CO3554 Data Management Project 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+NAME                           : A.J.L. REMINGAN 
+REGISTRATION NO  : EN108921 
+INDEX NO                   : 22/ENG/008 
+SUBMISSION DATE  : 14/11/2026 
+--- PAGE 2 ---
+1 
+ 
+1. Problem Statement and Motivation 
+Students in long online classes lose focus due to tiredness, stress, and poor nutrition and 
+posture habits, and existing educational systems do not account for these factors - affecting 
+both students (lower focus, worse habits) and parents, who have no visibility into mood, 
+posture, or food intake during a class. EduEats addresses this by detecting student mood from 
+webcam images, mapping that mood to nutrient needs, recommending real food from a verified 
+nutrition dataset, and monitoring posture during study sessions - full background in the original 
+proposal. 
+2. Aim and Objectives 
+Aim: to build a system that detects a student's mood and posture from webcam images in real 
+time and recommends appropriate food and hydration using real nutrition data, to help students 
+stay focused and healthy during online classes. 
+Objectives: 
+• Detect student mood from webcam images in real time using a CNN trained on FER -
+2013. Measured by test-set accuracy and F1 score. 
+• Recommend food and hydration matched to the detected mood, using a rule engine 
+over a real, source-verified nutrition dataset. Measured by whether every mood returns a 
+non-empty, nutrient-justified food list. 
+• Monitor student posture continuously during a session and flag poor posture. 
+Measured by live posture status shown during a real session. 
+• Store all student mood, food, and posture data in a structured relational database. 
+Measured by every real app action producing a verifiable database row. 
+• Notify parents of mood, food, and posture concerns through a privacy -appropriate 
+channel. Measured by a working parent -facing alert reaching a parent account - not yet 
+met, see Section 6. 
+What changed since the proposal: the mood categories implemented are the 7 rea l FER-2013 
+emotion classes (angry, disgust, fear, happy, neutral, sad, surprise), not states like "sleepy" 
+used as an example in planning documents - FER-2013 is a facial emotion dataset, not a 
+drowsiness detector, so a CNN trained on it cannot output a mood it was never trained to 
+classify. Also, the parent notification objective is being redesigned (Section 6) after a project 
+review raised privacy concerns with the originally planned approach. 
+ 
+3. Methodology and System Design 
+3.1 Architecture and data flow 
+EduEats has a React.js front end, a Node.js and Express.js back end with REST APIs, a 
+MySQL database, and a Python machine learning layer (a CNN trained on FER -2013) feeding 
+a rule-based nutrient engine (Figure 1). 
+1. A student starts a study session in the browser; the webcam captures a frame and sends 
+it to the backend with the student and session ID. 
+2. The backend runs the CNN (FER -2013) as a Python subprocess on that frame, which 
+predicts one of 7 real moods (angry, disgust, fear, happy, neutral, sad, surprise). 
+--- PAGE 3 ---
+2 
+ 
+3. The rule engine maps the predicted mood to nutrient requirements (for example, high 
+water, adequate vitamin B) and filters the real 93 -food USDA nutrition dataset against 
+each nutrient's dataset median as a high/low cutoff. 
+4. The backend saves the mood and the matched foods to MySQL; the matched foods are 
+shown on the student dashboard. The same webcam feed is independently analysed in 
+the browser with MediaPipe Pose for posture, and posture status is saved and shown the 
+same way. 
+ 
+Figure 1: Architecture of the real EduEats pipeline 
+3.2 Data and models 
+Two real data-driven components feed the pipeline above: the CNN (a trained model) and the 
+rule engine (a fixed, citation-backed rule table, not a learned model). Both are described in full 
+in Appendix A of the original proposal; real status is summarised below. 
+Stage Algorithm Inputs Output Data (train / 
+test) 
+1. Mood 
+detection 
+CNN - 4 
+Conv2D, 
+Dense(1024), 
+Dropout(0.10) 
+48x48 grayscale 
+face crop 
+One of 7 moods 
+(FER-2013 
+classes) 
+FER-2013: 
+28,709 train / 
+7,178 test 
+2. Food 
+recommendation 
+Rule-based IF-
+THEN + per-
+nutrient median 
+Mood + nutrition 
+data (93 foods x 6 
+nutrients) 
+Matching foods 
+per mood's 
+nutrient rule 
+93 real USDA 
+foods; fixed 
+rules, no training 
+ 
+Training approach: the CNN is trained with Adam (learning_rate=0.0001), EarlyStopping 
+(patience=10), up to 100 epochs, and evaluated only on the untouched FER-2013 test set, never 
+on training data. The rule engine is not trained - its nutrient thresholds are each nutrient's real 
+dataset median, and each mood's rule is backed by its own separately verified research citation 
+(Section 9). 
+Why a CNN plus a separate rule engine, not two learned models: no labelled dataset exists that 
+maps "mood to the correct food", so that step cannot be learned the same way mood detection 
+
+--- PAGE 4 ---
+3 
+ 
+can. A citation-backed rule table is more defensible for a course report and keeps the mood -to-
+food reasoning transparent rather than hidden inside a second black-box model. 
+Application design: one real role exists today - a signed-in student sees only their own mood, 
+food, posture, and progress data. MySQL stores students, sessions, moods,  
+food_recommendations, posture_checks, posture_alerts, and food_log, linked by foreign keys. 
+A parent role is planned but not yet built (Section 6). 
+ 
+3.3 Tools and technologies 
+The technology choices from the proposal were followed, with one real substitution: 
+Tool Used for Reason for choice 
+React.js (Vite) Student portal: dashboard, 
+session, nutrition, settings 
+Component-based, suited to 
+an interactive, growing 6-page 
+UI 
+Node.js, Express.js REST APIs for check-in, 
+sessions, nutrition, auth 
+Same language as the front 
+end, simple API development 
+MySQL Students, sessions, moods, 
+food_recommendations, 
+posture 
+Course's relational-database 
+focus over SQLite 
+Python, TensorFlow/Keras CNN mood detection (FER-
+2013) 
+Standard stack for image 
+classification 
+MediaPipe Pose Browser-side posture 
+detection 
+Shares the existing webcam 
+feed - no extra hardware 
+needed 
+Firebase Cloud Messaging Originally planned for parent 
+alerts 
+Under revision - see Section 6 
+ 
+4. Initial Milestones (Planned vs Actual) 
+The proposal used a 28-week, 5-phase plan. Status at mid-term: 
+Phase Planned (weeks) Actual Remark 
+Phase 1 - Research & 
+Planning 
+1-4 Completed Objectives, scope and 
+features finalised 
+Phase 2 - Data 
+Collection & 
+Preparation 
+5-9 Completed FER-2013 prepared; 93-food 
+USDA dataset built from 
+source 
+Phase 3 - Model 
+Development & 
+Rules 
+10-18 Completed CNN trained (61.4% 
+accuracy, F1 0.611); rule 
+engine built with citations 
+Phase 4 - System 
+Integration 
+19-23 Partially completed Student-side fully integrated 
+and verified live. Parent-side 
+on hold pending Section 6 
+redesign. 
+--- PAGE 5 ---
+4 
+ 
+Phase 5 - Testing & 
+Documentation 
+24-28 In progress 81 frontend tests passing; full 
+pipeline verified live end-to-
+end. 
+No milestone is delayed outright. Model development finished within its planned window, and 
+Phase 4 is on schedule for the student -facing half of the system; the parent -facing half was 
+deliberately paused mid -phase for a privacy redesign rather than built and then reworked (see 
+Sections 6 and 8). 
+ 
+5. Progress up to Mid-Term (with Evidence) 
+Approximately 75% of the system described in the original proposal is complete. This is an 
+estimate based on the five objectives in Sectio n 2: four are fully done and verified live (mood 
+detection, food recommendation, posture monitoring, and data storage), and one (parent 
+notifications) is not yet built and is being redesigned. The completed work is listed below with 
+its evidence in Appendix A. 
+Component Status Evidence 
+CNN mood detection (FER-
+2013) 
+Completed 61.4% test accuracy, F1 0.611 
+weighted / 0.579 macro 
+(Section 7) 
+Nutrition dataset (93 real 
+USDA foods) 
+Completed Built from USDA FoodData 
+Central via a reusable script, 
+not hand-typed 
+Rule engine (mood -> 
+nutrient -> food match) 
+Completed Appendix A, Figs A4-A5 
+(Sad-mood detection + 
+matching foods) 
+MySQL database (8 tables) 
+and backend (22 endpoints) 
+Completed Live-verified end-to-end; real 
+Google OAuth, bcrypt-hashed 
+passwords 
+Student frontend (6 pages, 
+React) 
+Completed Appendix A, Figures A1-A8; 
+81/81 automated tests passing 
+Posture monitoring Completed Appendix A, Figure A2 (real 
+live posture status: Good) 
+Parent food-restriction list Not started Section 6 
+Privacy-appropriate parent 
+alerts 
+Not started (redesign in 
+progress) 
+Section 6 and Section 8 
+Tamil/Sinhala food names + 
+price columns 
+Not started Section 6 
+ 
+Real screenshots and terminal outputs supporting the table above - the CNN training log, the 
+F1 evaluation output, the live student dashboard, and the Sad-mood detection with its matching 
+food list - are attached as Appendix A, Figures A1 -A10, and referenced inline throughout this 
+report rather than duplicated here. 
+--- PAGE 6 ---
+5 
+ 
+6. Remaining Work and Plan to Complete the Full System (with a Gantt Chart) 
+The items below also respond to feedback from the mid -progress presentation panel: 
+multilingual food names and pricing, the parent food -restriction feature, and the shift to a 
+dedicated mobile app for the parent side. 
+• Add Tamil, Sinhala, and price columns to the nutrition dataset (re -run/extend the existing 
+real-source build script, not hand-typed values). 
+• Build a parent food-restriction list: parents mark foods their child must not eat, and the rule 
+engine filters recommendations against that list. 
+• Redesign the parent alert channel away from Firebase Cloud Messaging with a collected 
+phone number, after a privacy review flagged it. 
+• Decide and implement a privacy -appropriate approach to the mood -detection photo itself 
+(e.g. never persisting the frame to disk, process-then-discard, explicit consent). 
+• Build the parent side as a dedicated React Native mobile app, not a web dashboard. 
+• Evaluate the full mood -detection-to-recommendation pipeline end to end, not just each 
+component in isolation. 
+• Full system testing (unit, integration, user acceptance) across both student and parent sides. 
+• Finish project documentation and the final report. 
+ 
+Figure 4: Remaining work - updated Gantt chart 
+ 
+7. Evaluation Plan 
+What How Success measure 
+CNN mood detection Measured on the real, unseen FER-
+2013 test set (7,178 images): 
+accuracy, precision/recall/F1 per 
+mood 
+61.4% accuracy, 0.611 weighted F1 
+achieved; no further tuning planned 
+Rule engine + nutrition 
+matching 
+Check every one of the 7 real moods 
+returns a non-empty, nutrient-justified 
+food list 
+All 7 moods return a defensible 
+match (panel item still being 
+verified) 
+Frontend Automated test suite (Vitest) + 
+manual live-browser runs of the 
+check-in flow 
+81/81 automated tests passing; live 
+pipeline verified (real photo in, real 
+mood/food out, real DB write) 
+Parent features (once 
+built) 
+New test cases for restriction-list 
+filtering and the privacy consent flow 
+All new test cases pass before the 
+feature is considered done 
+
+--- PAGE 7 ---
+6 
+ 
+Overall system End-to-end run from webcam capture 
+to on-screen recommendation, 
+repeated for each of the 7 moods 
+Each run produces a correct, logged 
+result with no manual intervention 
+ 
+8. Challenges and Constraints 
+Challenge so far How it was handled 
+A deeper CNN architecture collapsed to 
+~11% accuracy (pure random-guess level) 
+when depth was increased without 
+changing the learning rate 
+Diagnosed as the default learning rate being 
+too large a step for the deeper network; fixed 
+by lowering it 10x, which recovered real 
+learning 
+Background training runs were repeatedly 
+killed by the development environment 
+during multi-hour jobs 
+Training is now always run in a real 
+foreground terminal instead of backgrounded 
+by the assistant 
+A substring false-positive bug and a 
+missing-calories bug in the USDA dataset 
+build script 
+Fixed with word-boundary matching and a 
+fallback nutrient code between the two USDA 
+source files 
+A project review panel flagged the planned 
+Firebase push notification design (parent 
+phone number, photographing a minor's 
+face) as a privacy concern 
+The parent-side notification system is being 
+redesigned before it is built, rather than 
+reworked later - see Section 6 
+An abandoned study session (camera closed 
+without clicking Stop) was counted as still 
+running indefinitely, inflating weekly study 
+time to an impossible 373+ hours 
+Root cause: the time calculation had no upper 
+bound for an unended session. Fixed by 
+capping it at the session's own chosen 
+duration, verified live 
+ 
+Remaining risk: the parent -side redesign (mobile app, new alert channel, privacy handling for 
+the mood photo) is the largest single piece of remaining work and the part most likely to affect 
+the final timeline. It is being tackled first among the remaining tasks (Section 6) specifically 
+because of this risk, with UI/dataset cleanup and privacy fixes done in parallel rather than 
+deferred to the end. 
+ 
+9. Conclusion and References 
+At the mid -progress stage, EduEats's student -facing pipeline is fully built and verified: mood 
+detection from webcam images, rule-based nutrient mapping, food recommendation from a real 
+USDA-sourced dataset, and posture monitoring all work together end -to-end, backed by a live 
+MySQL database and a tested React frontend, with the CNN reaching a real, honestly -reported 
+61.4% test accuracy. The project is on track to finish on time; the main remaining work is the 
+parent-facing side. Rather than proceeding with the originally planned phone -push-notification 
+design after it was flagged as a privacy concern, this component is being deliberately 
+redesigned as a dedicated mobile application with more careful data handling - a decision made 
+in response to real review feedback, and the clear focus for the re mainder of the project 
+timeline 
+--- PAGE 8 ---
+7 
+ 
+References 
+[1] I. J. Goodfellow et al., "Challenges in representation learning: A report on three machine 
+learning contests," Neural Networks, vol. 64, pp. 59-63, 2015. 
+https://www.sciencedirect.com/science/article/abs/pii/S0893608014002159?via%3Dihub 
+(Accessed: 7 Sept. 2026). 
+[2] U.S. Department of Agriculture, Agricultural Research Service, FoodData Central: SR 
+Legacy and Foundation Foods. [Online]. Available: https://fdc.nal.usda.gov/ (Accessed: 7 Sept. 
+2026). 
+[3] L. M. Young, A. Pipingas, D. J. White, S. Gauci, and A. Scholey, "A systematic review and 
+meta-analysis of B vitamin supplementation on depressive symptoms, anxiety, and stress," 
+Nutrients, vol. 11, no. 9, p. 2232, 2019. https://www.mdpi.com/2072-6643/11/9/2232 
+(Accessed: 7 Sept. 2026). 
+[4] B. J. Bushman, C. N. DeWall, R. S. Pond, and M. D. Hanus, "Low glucose relates to 
+greater aggression in married couples," Proc. Natl. Acad. Sci., vol. 111, no. 17, pp. 6254-6257, 
+2014. https://www.pnas.org/doi/full/10.1073/pnas.1400619111 (Accessed: 7 Sept. 2026). 
+[5] N. B. Boyle, C. Lawton, and L. Dye, "The effects of magnesium supplementation on 
+subjective anxiety and stress - a systematic review," Nutrients, vol. 9, no. 5, p. 429, 2017. 
+https://www.mdpi.com/2072-6643/9/5/429 (Accessed: 7 Sept. 2026). 
+[6] B. A. White, C. C. Horwath, and T. S. Conner, "Many apples a day keep the blues away: 
+Daily experiences of negative and positive affect and food consumption in young adults," Br. J. 
+Health Psychol., vol. 18, no. 4, pp. 782-798, 2013. 
+https://bpspsychub.onlinelibrary.wiley.com/doi/10.1111/bjhp.12021 (Accessed: 7 Sept. 2026). 
+[7] C. Randler, I. H. Desch, V. O. im Kampe, P. Wüst-Ackermann, M. Wilde, and P. Prokop, 
+"Anxiety, disgust and negative emotions influence food intake in humans," Int. J. Gastron. 
+Food Sci., vol. 7, pp. 11-15, 2017. 
+https://www.sciencedirect.com/science/article/pii/S1878450X16300567 (Accessed: 7 Sept. 
+2026). 
+[8] C. Evers, A. Dingemans, A. F. Junghans, and A. Boevé, "Feeling bad or feeling good, does 
+emotion affect your consumption of food? A meta-analysis of the experimental evidence," 
+Neurosci. Biobehav. Rev., vol. 92, pp. 195-208, 2018. 
+https://www.sciencedirect.com/science/article/abs/pii/S0149763417309272?via%3Dihub 
+(Accessed: 7 Sept. 2026). 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+--- PAGE 9 ---
+8 
+ 
+Appendix A: Application Screenshots 
+Real screenshots of the running student portal, captured live from the actual application 
+(localhost frontend + backend + MySQL), signed in as a real test student account - not 
+mockups or simulated data. 
+ 
+Figure A1: Student 
+Dashboard - real detected 
+mood and rule-engine food 
+match 
+ 
+Figure A2: Study Session - 
+live webcam check-in, real 
+posture status (Good) 
+ 
+Figure A3: Study Session - 
+Test Check-In running the 
+real pipeline 
+ 
+ 
+Figure A4: Study Session - 
+Sad mood detected with the 
+real rule-engine food list 
+ 
+Figure A5: My Nutrition - 
+recommended foods from the 
+real rule engine 
+ 
+Figure A6: Mood & Focus - 
+weekly mood summary from 
+real check-in history 
+ 
+ 
+Figure A7: My Progress - 
+real weekly study time and 
+focus rate 
+ 
+Figure A8: Settings 
+ 
+Figure A9: Real CNN 
+training log (terminal output, 
+final epochs) 
+ 
+ 
+Figure A10: Real ml/evaluate_f1.py output (terminal output, classification report) 
+ 

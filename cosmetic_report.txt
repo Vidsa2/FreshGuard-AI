@@ -1,0 +1,406 @@
+
+--- PAGE 1 ---
+ 
+ 
+Data Management Project 
+COSMETICVERIFY 
+AI-Based Cosmetic Product Verification and Marketplace Comparison 
+System 
+MID-TERM PROGRESS REPORT 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+ 
+ 
+ 
+ 
+NAME                        : R.K.R DHANOSHIGAN 
+INDEX NO                 : 22_ENG_133 
+REGISTRATION NO  : EN 108919       
+--- PAGE 2 ---
+1.Problem Statement and Motivation 
+Cosmetic products are sold through multiple online marketplaces, and information about the same or 
+similar products is often distributed across separate listings. A user who wants to identify a cosmetic 
+product from its packaging may need to inspect the br and name, product type and other printed 
+information manually. Comparing listings, prices and customer feedback across platforms can also 
+require considerable time. 
+CosmeticVerify addresses this problem by bringing image -based product identification, packaging text 
+extraction and marketplace comparison into one application. The system accepts a cosmetic product 
+image and uses a pretrained vision-language model together with optical character recognition to support 
+identification. It then presents available marketplace information and a recommendation based on the 
+information retrieved and configured analysis. 
+The system is intended as a decision-support tool. A marketplace listing match or recommendation does 
+not establish that a product is authentic or counterfeit. Results depend on image quality, available product 
+references and the accessibility and reliability of marketplace information. 
+  
+2. Aim and Objective  
+Aim: To develop an AI-assisted system that identifies cosmetic products from packaging images, extracts 
+relevant text, compares available marketplace listings and presents an explainable recommendation to 
+support user decisions. 
+ Objective Measure of success Mid-term status 
+O1 
+Identify cosmetic products from 
+uploaded images using pretrained 
+CLIP. 
+Evaluate on a separate labelled test set 
+using accuracy, precision, recall and 
+F1-score. 
+Prototype implemented; 
+formal evaluation pending. 
+O2 Extract visible product text using 
+OCR. 
+Assess extraction quality on 
+representative packaging images. 
+OCR integration present; 
+systematic evaluation 
+pending. 
+O3 Compare available marketplace 
+listings. 
+Check listing relevance and correctly 
+distinguish found, not found and 
+inaccessible results. 
+Amazon, Daraz and Temu 
+workflow demonstrated; 
+coverage varies. 
+O4 
+Analyse available review 
+information and produce 
+recommendations. 
+Validate calculations, evidence sources 
+and recommendation consistency. 
+Demonstration 
+interface/configurations 
+present; some review data is 
+simulated. 
+O5 Provide a usable and persistent 
+application. 
+End-to-end tests, database persistence 
+and user feedback. 
+Frontend/backend/AI 
+integration in progress; 
+authentication and 
+persistence remain to be 
+completed. 
+--- PAGE 3 ---
+3.Methodology and System Design 
+ 
+ 
+ 
+Figure 1: CosmeticVerify System Architecture and Product Analysis Workflow. 
+ 
+CosmeticVerify follows a layered architecture consisting of a Next.js frontend, Node.js backend and 
+Python FastAPI AI service. It integrates pretrained CLIP, Tesseract OCR and marketplace data retrieval 
+for cosmetic product identification and comparison. 
+Figure 1: CosmeticVerify System Architecture and Product Analysis Workflow 
+The workflow begins with image uploading, followed by CLIP -based product identification and OCR 
+text extraction. The backend retrieves available marketplace information, performs comparisons and 
+presents the analysis and final recommendation. 
+ 
+3.1 AI and Matching Approach 
+The system uses pretrained CLIP ViT -B/32 to extract image embeddings. Cosine similarity compares 
+uploaded images with product reference images. Tesseract OCR extracts visible packaging text to support 
+product identification. 
+ 
+ 
+ 
+ 
+
+--- PAGE 4 ---
+3.2 Tools and Technologies 
+Keep your existing technology table below this section. 
+Layer Technology Purpose 
+Frontend Next.js, React, TypeScript Web interface, image upload and results presentation. 
+Backend Node.js, Express API gateway, request handling and coordination. 
+AI service Python, FastAPI, Uvicorn Expose AI analysis functions through HTTP 
+endpoints. 
+Image 
+understanding Pretrained CLIP ViT-B/32 Visual embeddings and zero-shot image/text 
+comparison. 
+Text extraction Tesseract OCR Extract visible text from cosmetic packaging. 
+Marketplace 
+retrieval Requests, BeautifulSoup Retrieve and parse accessible webpage information 
+where permitted. 
+Database PostgreSQL (planned/needs 
+verification) 
+Target persistence layer for users, products and 
+analysis history. 
+Development Git, GitHub, VS Code Source control and development workflow. 
+ 
+4. Initial Milestones (Planned vs Actual) 
+The milestones below summarize the work reflected in the project discussions and implementation 
+history available for this report. Exact proposal week numbers and formal milestone dates were not 
+provided, so progress is described by work package rather than assigning unsupported dates. 
+ 
+Milestone Planned work Progress reflected so far Status 
+Requirements 
+and design 
+Define problem, 
+objectives and system 
+workflow. 
+Project scope and five main analysis stages 
+(identification through recommendation) 
+have been established. 
+Completed / 
+refined 
+Frontend Build upload and result 
+interface. 
+Next.js-based upload and multi-section 
+results interface has been developed. 
+Implemented; 
+UX 
+refinement 
+pending 
+Backend 
+integration 
+Connect frontend, 
+backend and AI 
+service. 
+Node.js/Express upload gateway forwards 
+images to FastAPI. An abort/timeout issue 
+was observed and requires verification 
+after fixes. 
+Partially 
+completed 
+--- PAGE 5 ---
+Milestone Planned work Progress reflected so far Status 
+AI identification Integrate CLIP and 
+OCR. 
+Pretrained CLIP ViT-B/32 embedding 
+workflow and Tesseract OCR are part of 
+the implementation. 
+implemented 
+Database and 
+user accounts 
+Persist user profiles and 
+analysis history. 
+PostgreSQL is in the target stack; complete 
+connection, persistence and user 
+authentication are not confirmed. 
+Remaining 
+work 
+Evaluation 
+Measure identification 
+and system 
+performance. 
+Dataset split and model evaluation ideas 
+have been discussed; verified final metric 
+results are not available. 
+Pending 
+Search Engine 
+Integration 
+Develop product search 
+functionality. 
+Search functionality to retrieve cosmetic 
+product information. Pending 
+ 
+5. Progress up to Mid-Term (with Evidence) 
+The project has progressed to an integrated prototype consisting of a Next.js frontend, Node.js backend 
+and Python-based AI service. The system demonstrates cosmetic image uploading, product identification, 
+OCR, marketplace comparison and recommendation ge neration. Evidence of the implemented features 
+is provided in Appendices A–F. 
+5.1 Frontend Development 
+The frontend provides an image-upload interface and displays product identification, verification results, 
+marketplace comparisons, review analysis and recommendations. Further UI improvements are planned 
+to enhance usability. 
+Evidence: Appendices A and B. 
+5.2 AI-Based Product Identification and OCR 
+The system uses pretrained CLIP ViT -B/32 for visual product matching and Tesseract OCR to extract 
+text from cosmetic packaging. These techniques support product identification using visual and textual 
+information. 
+Evidence: Appendix A. 
+5.3 Product Matching and Model Evaluation 
+Uploaded images are compared with stored product reference embeddings using cosine similarity. The 
+existing evaluation report records 61.56% Top-1 accuracy and 54.97% Top -5 accuracy across 553 test 
+images from 30 product classes. Further improvements are required to increase identification 
+performance. 
+Evidence: Appendix G. 
+ 
+--- PAGE 6 ---
+5.4 Marketplace Comparison 
+The application demonstrates product comparison across Amazon, Daraz and Temu. Marketplace access 
+restrictions and demonstration data may affect result availability; therefore, simulated information is not 
+presented as verified live data. 
+Evidence: Appendix C. 
+5.5 Review Analysis and Recommendation 
+The interface includes customer review analysis and final product recommendations. Current 
+demonstration review values are simulated, and separate sentiment-model evaluation remains necessary. 
+Evidence: Appendices D and E. 
+5.6 Backend and AI Service Integration 
+The Node.js backend communicates with the FastAPI AI service to process uploaded images. The AI 
+service has been successfully started locally using Uvicorn on port 8001. Further testing is required to 
+verify complete request processing and error handling. 
+Evidence: Appendix F . 
+ 
+6. Remaining Work Of The Full System 
+ 
+The remaining work focuses on improving reliability, completing data persistence, simplifying the user 
+experience and evaluating the AI pipeline. The sequence below is a proposed plan; it is not a record of 
+completed work. 
+1. Complete PostgreSQL integration and verify data persistence. 
+2. Implement user registration, login, logout and secure user-specific history. 
+3. Develop a workflow for identifying and managing new or unlisted products. 
+4. Redesign the results page with a recommendation-first UI. 
+5. Add saved products, analysis history and product catalogue management. 
+6. Evaluate CLIP zero -shot and reference -based matching approaches to improve identification 
+accuracy. 
+7. Improve marketplace retrieval, error handling and upload processing. 
+8. Integrate a Search Engine  to search for cosmetic product information and retrieve relevant product 
+details. 
+9. Complete end-to-end testing, usability evaluation, documentation and deployment preparation. 
+ 
+--- PAGE 7 ---
+ 
+Figure 2: Proposed Project Implementation Timeline and Remaining Work Plan (November 2026 – 
+January 2027). 
+7.EV ALUATION PLAN 
+ 
+The system should be evaluated using held-out examples and repeatable tests. No final accuracy or 
+performance figures are reported here because verified evaluation outputs have not been provided in 
+the project information available for this report. 
+ 
+Evaluation 
+area Method Measure / expected evidence 
+Product 
+identification 
+Test labelled images not used as reference 
+images. 
+Accuracy, precision, recall, F1-score 
+and confusion matrix. 
+CLIP approach 
+comparison 
+Compare zero-shot CLIP-only with 
+reference-based matching on the same test 
+set. 
+Per-class results and exact product 
+match rate. 
+OCR Compare extracted packaging text with 
+manually checked text. 
+Character/word error or field-level 
+extraction correctness. 
+Marketplace 
+matching 
+Manually inspect a sample of returned 
+listings. 
+Correct match, mismatch, not found 
+and unable-to-verify counts. 
+Review 
+analysis 
+Check source provenance and sentiment 
+labels on a verified sample. 
+ 
+ 
+Agreement with manually labelled 
+reviews; simulated data excluded. 
+System 
+performance 
+Measure upload-to-result time and repeat 
+API tests. 
+Response time, failure rate and 
+successful end-to-end runs. 
+
+--- PAGE 8 ---
+8.Challenges and Constraints  
+ 
+Challenge Effect on the system Handling / next action 
+Marketplace access 
+restrictions 
+CAPTCHA or blocked requests can 
+prevent listing and review retrieval. 
+Show access-restricted / unable-to-verify states; 
+do not treat them as proof of absence. 
+Product similarity Different formulations or variants 
+can appear visually similar. 
+Use OCR and product metadata alongside visual 
+similarity; avoid unsupported exact-match claims. 
+Limited reference 
+catalogue 
+Unseen brands, packaging changes 
+and image conditions can reduce 
+matching reliability. 
+Test on unseen products and broaden reference 
+coverage only when justified. 
+OCR quality Small, curved, reflective or blurred 
+packaging text can be misread. 
+Apply suitable image preprocessing and report 
+low-confidence extraction. 
+AI service request 
+timeout 
+Initial model loading or processing 
+can cause gateway requests to abort. 
+Review timeout settings, model loading and 
+structured error handling; retest. 
+CPU-only execution 
+Large model operations and 
+repeated embedding generation may 
+be slow. 
+Cache valid embeddings, avoid unnecessary 
+model reloads and benchmark actual response 
+time. 
+Demo versus live 
+evidence 
+Configured review values may be 
+mistaken for real marketplace 
+statistics. 
+Label simulated data clearly and keep it separate 
+from live retrieval. 
+ 
+9.Conclusion and References 
+ 
+The system is not yet a fully completed production application. Database persistence, user 
+authentication, improved handling of unlisted products, formal AI evaluation, marketplace retrieval 
+reliability and final usability testing remain important tasks. The next phase will prioritize these items 
+and will report measured results only after the relevant tests have been completed. 
+[1] A. Radford et al., “Learning Transferable Visual Models From Natural Language Supervision,” 
+Proceedings of the 38th International Conference on Machine Learning, PMLR 139, 2021, pp. 
+8748–8763. 
+[2] Tesseract OCR, “Tesseract User Manual,” official documentation. Available: https://tesseract-
+ocr.github.io/ 
+[3] Next.js, “Next.js Documentation.” Available: https://nextjs.org/docs 
+--- PAGE 9 ---
+[4] Express.js, “Express Documentation.” Available: https://expressjs.com/ 
+[5] FastAPI, “FastAPI Documentation.” Available: https://fastapi.tiangolo.com/ 
+[6] PostgreSQL Global Development Group, “PostgreSQL Documentation.” Available: 
+https://www.postgresql.org/docs/ 
+[7] Beautiful Soup, “Beautiful Soup Documentation.” Available: 
+https://www.crummy.com/software/BeautifulSoup/bs4/doc/ 
+ 
+Appendix 
+ 
+1. Appendix A – Product Identification                           2. Appendix B – Verification Summary 
+ 
+ 
+ 
+3. Appendix C – Marketplace Comparison             4. Appendix D – Customer Review Analysi 
+ 
+ 
+ 
+ 
+
+--- PAGE 10 ---
+5.Appendix E – Final Recommendation 
+ 
+ 
+ 
+ 
+6.Appendix F – Backend and AI Service Execution 
+ 
+ 
+ 
+7.Appendix G – Model Evaluation Results 
+ 
+ 
+ 
+ 
+8.Appendix H – Source code  
+Dhanos1119/AI-Cosmetic-Product-Verification: AI-based cosmetic product verification and 
+trustworthy marketplace recommendation system 
+ 

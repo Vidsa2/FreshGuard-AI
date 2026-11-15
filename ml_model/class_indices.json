@@ -1,0 +1,218 @@
+{
+  "classes": [
+    "FreshApple",
+    "FreshBanana",
+    "FreshBellpepper",
+    "FreshBittergourd",
+    "FreshCapsicum",
+    "FreshCarrot",
+    "FreshCucumber",
+    "FreshMango",
+    "FreshOkra",
+    "FreshOrange",
+    "FreshPotato",
+    "FreshStrawberry",
+    "FreshTomato",
+    "RottenApple",
+    "RottenBanana",
+    "RottenBellpepper",
+    "RottenBittergourd",
+    "RottenCapsicum",
+    "RottenCarrot",
+    "RottenCucumber",
+    "RottenMango",
+    "RottenOkra",
+    "RottenOrange",
+    "RottenPotato",
+    "RottenStrawberry",
+    "RottenTomato"
+  ],
+  "class_to_idx": {
+    "FreshApple": 0,
+    "FreshBanana": 1,
+    "FreshBellpepper": 2,
+    "FreshBittergourd": 3,
+    "FreshCapsicum": 4,
+    "FreshCarrot": 5,
+    "FreshCucumber": 6,
+    "FreshMango": 7,
+    "FreshOkra": 8,
+    "FreshOrange": 9,
+    "FreshPotato": 10,
+    "FreshStrawberry": 11,
+    "FreshTomato": 12,
+    "RottenApple": 13,
+    "RottenBanana": 14,
+    "RottenBellpepper": 15,
+    "RottenBittergourd": 16,
+    "RottenCapsicum": 17,
+    "RottenCarrot": 18,
+    "RottenCucumber": 19,
+    "RottenMango": 20,
+    "RottenOkra": 21,
+    "RottenOrange": 22,
+    "RottenPotato": 23,
+    "RottenStrawberry": 24,
+    "RottenTomato": 25
+  },
+  "idx_to_class": {
+    "0": "FreshApple",
+    "1": "FreshBanana",
+    "2": "FreshBellpepper",
+    "3": "FreshBittergourd",
+    "4": "FreshCapsicum",
+    "5": "FreshCarrot",
+    "6": "FreshCucumber",
+    "7": "FreshMango",
+    "8": "FreshOkra",
+    "9": "FreshOrange",
+    "10": "FreshPotato",
+    "11": "FreshStrawberry",
+    "12": "FreshTomato",
+    "13": "RottenApple",
+    "14": "RottenBanana",
+    "15": "RottenBellpepper",
+    "16": "RottenBittergourd",
+    "17": "RottenCapsicum",
+    "18": "RottenCarrot",
+    "19": "RottenCucumber",
+    "20": "RottenMango",
+    "21": "RottenOkra",
+    "22": "RottenOrange",
+    "23": "RottenPotato",
+    "24": "RottenStrawberry",
+    "25": "RottenTomato"
+  },
+  "class_info": {
+    "FreshApple": {
+      "is_fresh": true,
+      "condition": "Fresh",
+      "produce": "Apple"
+    },
+    "FreshBanana": {
+      "is_fresh": true,
+      "condition": "Fresh",
+      "produce": "Banana"
+    },
+    "FreshBellpepper": {
+      "is_fresh": true,
+      "condition": "Fresh",
+      "produce": "Bellpepper"
+    },
+    "FreshBittergourd": {
+      "is_fresh": true,
+      "condition": "Fresh",
+      "produce": "Bittergourd"
+    },
+    "FreshCapsicum": {
+      "is_fresh": true,
+      "condition": "Fresh",
+      "produce": "Capsicum"
+    },
+    "FreshCarrot": {
+      "is_fresh": true,
+      "condition": "Fresh",
+      "produce": "Carrot"
+    },
+    "FreshCucumber": {
+      "is_fresh": true,
+      "condition": "Fresh",
+      "produce": "Cucumber"
+    },
+    "FreshMango": {
+      "is_fresh": true,
+      "condition": "Fresh",
+      "produce": "Mango"
+    },
+    "FreshOkra": {
+      "is_fresh": true,
+      "condition": "Fresh",
+      "produce": "Okra"
+    },
+    "FreshOrange": {
+      "is_fresh": true,
+      "condition": "Fresh",
+      "produce": "Orange"
+    },
+    "FreshPotato": {
+      "is_fresh": true,
+      "condition": "Fresh",
+      "produce": "Potato"
+    },
+    "FreshStrawberry": {
+      "is_fresh": true,
+      "condition": "Fresh",
+      "produce": "Strawberry"
+    },
+    "FreshTomato": {
+      "is_fresh": true,
+      "condition": "Fresh",
+      "produce": "Tomato"
+    },
+    "RottenApple": {
+      "is_fresh": false,
+      "condition": "Rotten",
+      "produce": "Apple"
+    },
+    "RottenBanana": {
+      "is_fresh": false,
+      "condition": "Rotten",
+      "produce": "Banana"
+    },
+    "RottenBellpepper": {
+      "is_fresh": false,
+      "condition": "Rotten",
+      "produce": "Bellpepper"
+    },
+    "RottenBittergourd": {
+      "is_fresh": false,
+      "condition": "Rotten",
+      "produce": "Bittergourd"
+    },
+    "RottenCapsicum": {
+      "is_fresh": false,
+      "condition": "Rotten",
+      "produce": "Capsicum"
+    },
+    "RottenCarrot": {
+      "is_fresh": false,
+      "condition": "Rotten",
+      "produce": "Carrot"
+    },
+    "RottenCucumber": {
+      "is_fresh": false,
+      "condition": "Rotten",
+      "produce": "Cucumber"
+    },
+    "RottenMango": {
+      "is_fresh": false,
+      "condition": "Rotten",
+      "produce": "Mango"
+    },
+    "RottenOkra": {
+      "is_fresh": false,
+      "condition": "Rotten",
+      "produce": "Okra"
+    },
+    "RottenOrange": {
+      "is_fresh": false,
+      "condition": "Rotten",
+      "produce": "Orange"
+    },
+    "RottenPotato": {
+      "is_fresh": false,
+      "condition": "Rotten",
+      "produce": "Potato"
+    },
+    "RottenStrawberry": {
+      "is_fresh": false,
+      "condition": "Rotten",
+      "produce": "Strawberry"
+    },
+    "RottenTomato": {
+      "is_fresh": false,
+      "condition": "Rotten",
+      "produce": "Tomato"
+    }
+  }
+}
